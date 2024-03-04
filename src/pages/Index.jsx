@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, VStack, HStack, IconButton, Input, InputGroup, InputRightElement, Text, Image, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button } from "@chakra-ui/react";
 import { FaCamera, FaPaperPlane, FaRegSmile } from "react-icons/fa";
 
@@ -9,6 +9,15 @@ const Index = () => {
   const [snapMessage, setSnapMessage] = useState("");
   const [snaps, setSnaps] = useState([]);
   const [selectedSnap, setSelectedSnap] = useState(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newSnap = `Snap received at ${new Date().toLocaleTimeString()}`;
+      setSnaps((prevSnaps) => [...prevSnaps, newSnap]);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleOpenSnap = (snap) => {
     setSelectedSnap(snap);
