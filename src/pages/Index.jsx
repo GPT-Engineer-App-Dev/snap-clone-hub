@@ -4,8 +4,16 @@ import { FaCamera, FaPaperPlane, FaRegSmile } from "react-icons/fa";
 
 const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isSnapOpen, onOpen: onSnapOpen, onClose: onSnapClose } = useDisclosure();
   const initialRef = React.useRef();
   const [snapMessage, setSnapMessage] = useState("");
+  const [snaps, setSnaps] = useState([]);
+  const [selectedSnap, setSelectedSnap] = useState(null);
+
+  const handleOpenSnap = (snap) => {
+    setSelectedSnap(snap);
+    onSnapOpen();
+  };
 
   const handleSendSnap = () => {
     console.log("Snap sent:", snapMessage);
@@ -42,10 +50,21 @@ const Index = () => {
           Messages
         </Text>
         <Box w="full" h="200px" bg="gray.100" borderRadius="md" overflowY="auto">
-          {/* Messages would be mapped here */}
-          <Text p={2}>Friend's Snap</Text>
-          <Text p={2}>Another Snap</Text>
+          {snaps.map((snap, index) => (
+            <Box key={index} p={2} bg="white" borderRadius="md" mb={2} shadow="md" cursor="pointer" onClick={() => handleOpenSnap(snap)}>
+              {snap}
+            </Box>
+          ))}
         </Box>
+
+        <Modal isOpen={isSnapOpen} onClose={onSnapClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Snap</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{selectedSnap}</ModalBody>
+          </ModalContent>
+        </Modal>
       </VStack>
 
       <InputGroup size="md">
