@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, VStack, HStack, IconButton, Input, InputGroup, InputRightElement, Text, Image, useDisclosure, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button } from "@chakra-ui/react";
 import { FaCamera, FaPaperPlane, FaRegSmile } from "react-icons/fa";
 
 const Index = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef();
+  const [snapMessage, setSnapMessage] = useState("");
+
+  const handleSendSnap = () => {
+    console.log("Snap sent:", snapMessage);
+    setSnapMessage("");
+  };
 
   return (
     <VStack spacing={4} p={4}>
@@ -43,11 +49,11 @@ const Index = () => {
       </VStack>
 
       <InputGroup size="md">
-        <Input pr="4.5rem" type="text" placeholder="Send a message" ref={initialRef} />
+        <Input pr="4.5rem" type="text" placeholder="Send a snap" value={snapMessage} onChange={(e) => setSnapMessage(e.target.value)} ref={initialRef} />
         <InputRightElement width="4.5rem">
           <HStack spacing={2}>
             <IconButton icon={<FaRegSmile />} variant="ghost" aria-label="Add emoji" />
-            <IconButton icon={<FaPaperPlane />} variant="ghost" aria-label="Send message" />
+            <IconButton icon={<FaPaperPlane />} variant="ghost" aria-label="Send snap" onClick={() => handleSendSnap()} />
           </HStack>
         </InputRightElement>
       </InputGroup>
